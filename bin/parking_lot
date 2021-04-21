@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+require_relative './../src/parking_space'
+class ParkingLot
+	def initialize
+		@parking_space = nil
+	end
+    def get_input
+	  if (ARGV.length == 0)
+	  	input = ""
+	  	while (input = gets.chomp) != 'exit'
+	     create(input)
+	 	end
+	  else
+	    begin
+	      input = File.read(ARGV[0])
+	    rescue StandardError => file
+	      puts "Error reading file #{ file }"
+	      return
+	    end
+	    begin
+	    	process_commands(input)
+	  	rescue StandardError => file
+	  		puts "Error processing input. Error - #{ file }"
+	  	end
+	  end
+	end
+	def process_commands(input)
+	  input.split("\n").each do |input|
+	    create(input)
+	  end
+	end
+
+	def create input
+		unless input == ""
+			sliced_input = input.split(/\s/)
+		    command = sliced_input[0]
+		    if  command == 'create_parking_lot'
+		      no_of_slots = sliced_input[1]
+		      @parking_space = ParkingSpace.new(no_of_slots)
+		    else
+		      @parking_space.send(command, *([sliced_input[1], sliced_input[2]].compact))
+		    end
+		end
+	end
+
+end
+ParkingLot.new.get_input

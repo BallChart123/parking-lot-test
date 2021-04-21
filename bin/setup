@@ -1,0 +1,9 @@
+# Add script to:
+# * Install dependencies
+sudo gem install bundle
+# * Build/Compile
+# * Run Test Suit to validate
+bin/run_functional_tests
+# After this is run, bin/parking_lot
+ bin/parking_lot file_inputs.txt
+# should Just Work.
